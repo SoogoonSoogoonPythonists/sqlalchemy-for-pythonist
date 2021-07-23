@@ -1,0 +1,187 @@
+# 5. 데이터 핸들링 - Core로 행 업데이트 및 삭제
+
+이번 섹션에서는 Core 방식으로 기존 행을 수정하고 기존 행을 삭제하는 데 사용되는 Update 및 Delete 구문에 대해 설명합니다. 
+
+<br>
+
+## `update()` 를 통한 SQL 표현식 구성
+
+다음처럼 UPDATE 구문을 작성할 수 있습니다.
+
+```
+>>> from sqlalchemy import update
+>>> stmt = (
+...     update(user_table).where(user_table.c.name == 'patrick').
+...     values(fullname='Patrick the Star')
+... )
+>>> print(stmt)
+'UPDATE user_account SET fullname=:fullname WHERE user_account.name = :name_1'
+```
+
+```python
+>>> stmt = (
+...     update(user_table).
+...     values(fullname="Username: " + user_table.c.name)
+... )
+>>> print(stmt)
+'UPDATE user_account SET fullname=(:name_1 || user_account.name)'
+```
+
+> 원문에는 `bindparam()` 에 대한 내용이 나오는데, 사용 사례를 잘 본 적이 없어서 이 글에서는 생략합니다. 궁금하신 분은 [원문 내용](https://docs.sqlalchemy.org/en/14/tutorial/data_update.html)을 참고하세요.
+
+<br>
+
+### Correlated 업데이트
+
+다음처럼 [Correlated Subquery](https://docs.sqlalchemy.org/en/14/tutorial/data_select.html#tutorial-scalar-subquery)를 사용하여 다른 테이블의 행을 사용할 수 있습니다.
+
+```python
+>>> scalar_subq = (
+...   select(address_table.c.email_address).
+...   where(address_table.c.user_id == user_table.c.id).
+...   order_by(address_table.c.id).
+...   limit(1).
+...   scalar_subquery()
+... )
+>>> update_stmt = update(user_table).values(fullname=scalar_subq)
+>>> print(update_stmt)
+"""
+UPDATE user_account SET fullname=(SELECT address.email_address
+FROM address
+WHERE address.user_id = user_account.id ORDER BY address.id
+LIMIT :param_1)
+"""
+```
+
+### 다른 테이블과 연관된 조건으로 업데이트
+
+테이블을 업데이트할 때, 다른 테이블의 정보와 연관하여 조건을 설정해야할 때가 있습니다.  
+이 경우, 예를들면 다음처럼 사용할 수 있습니다.
+
+```python
+>>> update_stmt = (
+...    update(user_table).
+...    where(user_table.c.id == address_table.c.user_id).
+...    where(address_table.c.email_address == 'patrick@aol.com').
+...    values(fullname='Pat')
+...  )
+>>> print(update_stmt)
+"""
+UPDATE user_account SET fullname=:fullname FROM address
+WHERE user_account.id = address.user_id AND address.email_address = :email_address_1
+"""
+```
+
+### 여러 테이블 동시에 업데이트
+
+다음처럼 여러 테이블에서 조건에 해당하는 특정 값들을 동시에 업데이트할 수 있습니다.
+
+>>> update_stmt = (
+...    update(user_table).
+...    where(user_table.c.id == address_table.c.user_id).
+...    where(address_table.c.email_address == 'patrick@aol.com').
+...    values(
+...        {
+...            user_table.c.fullname: "Pat",
+...            address_table.c.email_address: "pat@aol.com"
+...        }
+...    )
+...  )
+>>> from sqlalchemy.dialects import mysql
+>>> print(update_stmt.compile(dialect=mysql.dialect()))
+"""
+UPDATE user_account, address
+SET address.email_address=%s, user_account.fullname=%s
+WHERE user_account.id = address.user_id AND address.email_address = %s
+"""
+```
+
+> 원문의 Parameter Ordered Updates 부분은 제가 이해하지 못하여 정리하지 않았습니다.  
+> 잘 아시는 분이 있으면 이 문서에 기여해주시면 감사하겠습니다.
+
+<br>
+
+## `delete()` 를 통한 SQL 표현식 구성
+
+다음처럼 DELETE 구문을 작성할 수 있습니다.
+
+```python
+>>> from sqlalchemy import delete
+>>> stmt = delete(user_table).where(user_table.c.name == 'patrick')
+>>> print(stmt)
+"""
+DELETE FROM user_account WHERE user_account.name = :name_1
+"""
+```
+
+<br>
+
+### 다른 테이블과 조인하여 삭제
+
+다른 테이블과 조인한 뒤, 특정 조건에 맞는 데이터만 삭제해야 하는 경우가 있습니다. (이해가 안간다면 [이 글](https://servedev.tistory.com/61)을 참고해보세요.)
+이 경우, 예를들면 다음처럼 사용할 수 있습니다.
+
+```python
+>>> delete_stmt = (
+...    delete(user_table).
+...    where(user_table.c.id == address_table.c.user_id).
+...    where(address_table.c.email_address == 'patrick@aol.com')
+...  )
+>>> from sqlalchemy.dialects import mysql
+>>> print(delete_stmt.compile(dialect=mysql.dialect()))
+"""
+DELETE FROM user_account USING user_account, address
+WHERE user_account.id = address.user_id AND address.email_address = %s
+"""
+```
+
+<br>
+
+## UPDATE, DELETE에서 영향을 받는 행 수 얻기
+
+다음처럼 [`Result.rowcount` 속성](https://docs.sqlalchemy.org/en/14/core/connections.html#sqlalchemy.engine.CursorResult.rowcount)을 통해 쿼리가 처리한 행 수를 가져올 수 있습니다.
+
+```python
+>>> with engine.begin() as conn:
+...     result = conn.execute(
+...         update(user_table).
+...         values(fullname="Patrick McStar").
+...         where(user_table.c.name == 'patrick')
+...     )
+...     print(result.rowcount)  # Result 객체의 rowcount 속성을 사용합니다.
+
+1  # 쿼리가 처리한 행 수 (조건절에 걸리는 행 수와 같습니다.)
+```
+
+<br>
+
+## UPDATE, DELETE와 함께 RETURNING 사용하기
+
+다음처럼 RETURNING 문법을 사용할 수 있습니다. (RETURNING 문법에 대해서는 [이 글](https://blog.gaerae.com/2015/10/postgresql-insert-update-returning.html)을 참고해보세요.)
+
+```python
+>>> update_stmt = (
+...     update(user_table).where(user_table.c.name == 'patrick').
+...     values(fullname='Patrick the Star').
+...     returning(user_table.c.id, user_table.c.name)
+... )
+>>> print(update_stmt)
+"""
+UPDATE user_account SET fullname=:fullname
+WHERE user_account.name = :name_1
+RETURNING user_account.id, user_account.name
+"""
+```
+
+```python
+>>> delete_stmt = (
+...     delete(user_table).where(user_table.c.name == 'patrick').
+...     returning(user_table.c.id, user_table.c.name)
+... )
+>>> print(delete_stmt)
+"""
+DELETE FROM user_account
+WHERE user_account.name = :name_1
+RETURNING user_account.id, user_account.name
+"""
+```
