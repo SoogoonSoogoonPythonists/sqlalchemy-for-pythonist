@@ -1,0 +1,17 @@
+# ref: https://milooy.wordpress.com/2020/07/28/github-actions%EB%A1%9C-vuepress-%EB%B0%B0%ED%8F%AC%ED%95%98%EA%B8%B0/
+
+name: Build and Deploy
+on: [push]
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@main
+    - name: Vuepress deploy
+      uses: jenkey2011/vuepress-deploy@1.0.1
+      env:
+        ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        BUILD_SCRIPT: yarn && yarn build
+        TARGET_BRANCH: gh-pages
+        BUILD_DIR: build/
