@@ -1,0 +1,19 @@
+{
+  "name": "sqlalchemy-for-pythonist",
+  "version": "0.0.1",
+  "description": "SQLAlchemy를 쉽게 정리해놓은 문서입니다.",
+  "main": "index.js",
+  "authors": {
+    "name": "",
+    "email": ""
+  },
+  "repository": "https://github.com/SoogoonSoogoonPythonists/sqlalchemy-for-pythonist/sqlalchemy-for-pythonist",
+  "scripts": {
+    "dev": "vuepress dev src",
+    "build": "vuepress build src"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "vuepress": "^1.5.3"
+  }
+}
