@@ -8,10 +8,12 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@main
+
     - name: Vuepress deploy
       uses: jenkey2011/vuepress-deploy@1.0.1
       env:
         ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         BUILD_SCRIPT: yarn && yarn build
-        TARGET_BRANCH: gh-pages
+        TARGET_BRANCH: main
         BUILD_DIR: build/
+        COMMIT_MESSAGE: "[deploy] Vue Press로 배포합니다"
