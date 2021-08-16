@@ -69,7 +69,7 @@ module.exports = {
   plugins: [
     '@vuepress/plugin-back-to-top',
     '@vuepress/plugin-medium-zoom',
-    ["sitemap", { hostname: "httphttps://soogoonsoogoonpythonists.github.io/sqlalchemy-for-pythonist/" }],
+    ["sitemap", { hostname: "https://soogoonsoogoonpythonists.github.io/sqlalchemy-for-pythonist/" }],
     ["@vuepress/last-updated"],
   ]
 }
