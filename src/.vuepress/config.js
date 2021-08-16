@@ -30,10 +30,11 @@ module.exports = {
    */
   themeConfig: {
     repo: '',
-    editLinks: false,
+    editLinks: true,
     docsDir: '',
     editLinkText: '',
-    lastUpdated: false,
+    lastUpdated: true,
+    smoothScroll: true,
     nav: [
       {
         text: 'GitHub',
