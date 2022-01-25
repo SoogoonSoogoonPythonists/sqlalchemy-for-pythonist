@@ -72,5 +72,6 @@ module.exports = {
     '@vuepress/plugin-medium-zoom',
     ["sitemap", { hostname: "https://soogoonsoogoonpythonists.github.io/sqlalchemy-for-pythonist/" }],
     ["@vuepress/last-updated"],
+    ['@vuepress/google-analytics', {'ga': 'G-SNPCYHY4R2'}],
   ]
 }
