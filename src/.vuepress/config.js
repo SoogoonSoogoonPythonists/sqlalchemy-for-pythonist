@@ -21,7 +21,15 @@ module.exports = {
     ['meta', { name: 'theme-color', content: '#3eaf7c' }],
     ['meta', { name: 'apple-mobile-web-app-capable', content: 'yes' }],
     ['meta', { name: 'apple-mobile-web-app-status-bar-style', content: 'black' }],
-    ['meta', { name: 'google-site-verification', content: 'wjX_mSoZBgO9SZMvjr96yOjo6n3_7pS8xNdmzDl1ESw'}],
+    ['meta', { name: 'google-site-verification', content: 'wjX_mSoZBgO9SZMvjr96yOjo6n3_7pS8xNdmzDl1ESw' }],
+    [
+      "script",
+      {
+        async: true,
+        src: "https://www.googletagmanager.com/gtag/js?id=G-SNPCYHY4R2",
+      },
+    ],
+    ["script", {}, ["window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-SNPCYHY4R2');"]],
   ],
 
   /**
@@ -72,6 +80,5 @@ module.exports = {
     '@vuepress/plugin-medium-zoom',
     ["sitemap", { hostname: "https://soogoonsoogoonpythonists.github.io/sqlalchemy-for-pythonist/" }],
     ["@vuepress/last-updated"],
-    ['@vuepress/google-analytics', {'ga': 'G-SNPCYHY4R2'}],
   ]
 }
