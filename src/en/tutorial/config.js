@@ -81,7 +81,7 @@ module.exports = {
       '/en/': {
         repo: '',
         editLinks: true,
-        docsDir: '/en/',
+        docsDir: '/en.',
         editLinkText: '/en/',
         lastUpdated: true,
         smoothScroll: true,
@@ -98,15 +98,8 @@ module.exports = {
               path: '/en/tutorial/',
               collapsable: false,
               children: [
-                '1. Tutorial Overview',
-                '2. Setting Up a Connection',
-                '3. Executing Transactions and Queries',
-                '4. Working with Database Metadata',
-                '5.1. Querying Rows Using Core and ORM',
-                '5.2. Inserting Rows Using Core',
-                '5.3. Modifying and Deleting Rows Using Core',
-                '6. Manipulating Data Using ORM',
-                '7. Working with Related Objects Using ORM',
+                '1. tutorial',
+                '2. connection setting',
               ]
             },
           ]
