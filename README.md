@@ -6,6 +6,7 @@
 현재 아래 하나의 문서를 정리한 상태입니다.
 
 - [Tutorial](src/tutorial/)
+- [기여 방법에 대한 문서](/CONTRIBUTIONS.md)
 
 아래는 추후에 정리할 문서들입니다. 함께 참여해주시면 좋습니다!
 
@@ -18,4 +19,4 @@
 
 ## 커뮤니티
 
-작업에 대한 소통을 좀 더 용이하게 하기 위해 슬랙 채널을 운영하고 있습니다. ([📎 슬랙 채널 참여](https://join.slack.com/t/soogoonx2pythonists/shared_invite/zt-t8kvz57l-j~qJOhSP47annEB31QOLIQ))
+작업에 대한 소통을 좀 더 용이하게 하기 위해 슬랙 채널을 운영하고 있습니다. ([📎 슬랙 채널 참여](https://join.slack.com/t/soogoonx2pythonists/shared_invite/zt-27rth6utw-8qibkZV4~TRXp8qosUniLQ))
