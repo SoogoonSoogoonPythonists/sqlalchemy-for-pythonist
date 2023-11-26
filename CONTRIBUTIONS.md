@@ -132,7 +132,7 @@ yarn install    # yarn 패키지 관리자를 이용한 라이브러리 설치
 
 #### 구동 방법
 
-- 로컬 구동[1]
+- 로컬 구동[^1]
 ```shell
 yarn dev
 ```
@@ -165,4 +165,4 @@ yarn build
 
 README 페이지에 가이드된 Slack 워크스페이스로 오시면 됩니다([📎 슬랙 채널 참여](https://join.slack.com/t/soogoonx2pythonists/shared_invite/zt-t8kvz57l-j~qJOhSP47annEB31QOLIQ)).
 
-[1]: `Node.js` 18.x의 경우, 아래 내용을 환경 변수로 담아주어야 정상작동을 합니다. ([참고 링크](https://github.com/SoogoonSoogoonPythonists/sqlalchemy-for-pythonist/pull/30#issue-2010749637))
+[^1]: `Node.js` 18.x의 경우, 아래 내용을 환경 변수로 담아주어야 정상작동을 합니다. <br />`export NODE_OPTIONS=--openssl-legacy-provider` ([참고 링크](https://github.com/SoogoonSoogoonPythonists/sqlalchemy-for-pythonist/pull/30#issue-2010749637))
