@@ -1,6 +1,6 @@
 # sqlalchemy-for-pythonist
 
-sqlalchemy 공식 문서를 잘 정리하여 쉽게 사용하게끔 가이드하는 문서를 제공합니다.  
+이 리포지토리는 SQLAlchemy 공식 문서를 잘 정리하여 쉽게 사용하게끔 가이드하는 문서와 관련 코드를 제공합니다.
 [VuePress 웹 페이지](https://soogoonsoogoonpythonists.github.io/sqlalchemy-for-pythonist/)에서 문서를 확인하실 수 있습니다.
 
 현재 아래 하나의 문서를 정리한 상태입니다.
